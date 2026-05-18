@@ -67,7 +67,8 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 .gc-team:last-child{border-bottom:none}
 .gc-team:hover{background:var(--s2)}
 .gc-rank{width:18px;height:18px;border-radius:50%;background:var(--s3);color:var(--txd);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--tr)}
-.gc-flag{font-size:16px;flex-shrink:0}
+.gc-flag img,.mr-flag img,.br-flag img{display:inline-block;vertical-align:middle;border-radius:2px}
+.gc-flag{flex-shrink:0;display:flex;align-items:center}
 .gc-name{font-size:12.5px;font-weight:500;flex:1}
 .gc-badge{font-size:10px;padding:2px 6px;border-radius:3px;font-weight:700;letter-spacing:.04em;flex-shrink:0}
 .badge-1{background:var(--gold-dim);color:var(--gold)}
@@ -82,7 +83,7 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 .mr-num{font-size:10px;color:var(--txd);width:28px;text-align:center;flex-shrink:0;padding:0 4px}
 .mr-team{flex:1;display:flex;align-items:center;gap:6px;padding:8px 10px;min-width:0}
 .mr-team.right{flex-direction:row-reverse;text-align:right}
-.mr-flag{font-size:14px;flex-shrink:0}
+.mr-flag{flex-shrink:0;display:flex;align-items:center}
 .mr-name{font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mr-score{display:flex;align-items:center;gap:4px;flex-shrink:0;padding:4px 6px}
 .score-inp{width:32px;height:28px;background:var(--s3);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:13px;font-weight:600;text-align:center;font-family:inherit;outline:none;transition:border-color var(--tr);-moz-appearance:textfield}
@@ -132,7 +133,7 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 .br-team.win .br-tname{color:var(--gold);font-weight:600}
 .br-team.lose{opacity:.35}
 .br-team.empty{cursor:default}
-.br-flag{font-size:13px;flex-shrink:0}
+.br-flag{flex-shrink:0;display:flex;align-items:center}
 .br-tname{font-size:11.5px;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color var(--tr)}
 .br-tname.ph{color:var(--txd);font-style:italic;font-size:11px}
 .br-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;opacity:0;transition:opacity var(--tr)}
@@ -184,6 +185,10 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 .third-pos{font-size:10px;font-weight:700;color:var(--txm)}
 .third-pts{font-size:10px;color:var(--txd);margin-left:2px}
 
+
+.flag-img{width:20px;height:14px;border-radius:2px;object-fit:cover;vertical-align:middle;display:inline-block}
+.gc-flag,.mr-flag,.br-flag{display:flex;align-items:center;flex-shrink:0}
+
 @media(max-width:600px){.main{padding:1rem}.hdr{padding:0 1rem}.tabs{padding:0 1rem}}
 </style>
 </head>
@@ -230,7 +235,12 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 // DATA
 // ═══════════════════════════════════════════════════════════
 
-const FLAGS = {"Mexique":"🇲🇽","Afrique du Sud":"🇿🇦","Rép. de Corée":"🇰🇷","Rép. Tchèque":"🇨🇿","Canada":"🇨🇦","Bosnie-Herzég.":"🇧🇦","Qatar":"🇶🇦","Suisse":"🇨🇭","Brésil":"🇧🇷","Maroc":"🇲🇦","Haïti":"🇭🇹","Écosse":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australie":"🇦🇺","Turquie":"🇹🇷","Allemagne":"🇩🇪","Curaçao":"🇨🇼","Côte d'Ivoire":"🇨🇮","Équateur":"🇪🇨","Pays-Bas":"🇳🇱","Japon":"🇯🇵","Suède":"🇸🇪","Tunisie":"🇹🇳","Belgique":"🇧🇪","Egypte":"🇪🇬","RI Iran":"🇮🇷","Nouv.-Zélande":"🇳🇿","Espagne":"🇪🇸","Cap-Vert":"🇨🇻","Arabie Saoudite":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Sénégal":"🇸🇳","Irak":"🇮🇶","Norvège":"🇳🇴","Argentine":"🇦🇷","Algérie":"🇩🇿","Autriche":"🇦🇹","Jordanie":"🇯🇴","Portugal":"🇵🇹","RD Congo":"🇨🇩","Ouzbékistan":"🇺🇿","Colombie":"🇨🇴","Angleterre":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatie":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
+const FLAG_CODES = {"Mexique":"mx","Afrique du Sud":"za","Rép. de Corée":"kr","Rép. Tchèque":"cz","Canada":"ca","Bosnie-Herzég.":"ba","Qatar":"qa","Suisse":"ch","Brésil":"br","Maroc":"ma","Haïti":"ht","Écosse":"gb-sct","USA":"us","Paraguay":"py","Australie":"au","Turquie":"tr","Allemagne":"de","Curaçao":"cw","Côte d'Ivoire":"ci","Équateur":"ec","Pays-Bas":"nl","Japon":"jp","Suède":"se","Tunisie":"tn","Belgique":"be","Egypte":"eg","RI Iran":"ir","Nouv.-Zélande":"nz","Espagne":"es","Cap-Vert":"cv","Arabie Saoudite":"sa","Uruguay":"uy","France":"fr","Sénégal":"sn","Irak":"iq","Norvège":"no","Argentine":"ar","Algérie":"dz","Autriche":"at","Jordanie":"jo","Portugal":"pt","RD Congo":"cd","Ouzbékistan":"uz","Colombie":"co","Angleterre":"gb-eng","Croatie":"hr","Ghana":"gh","Panama":"pa"};
+function FLAGS(team) {
+  const code = FLAG_CODES[team];
+  if (!code) return '<span style="width:20px;display:inline-block"></span>';
+  return '<img src="https://flagcdn.com/' + code + '.svg" width="20" height="14" style="border-radius:2px;object-fit:cover;vertical-align:middle;flex-shrink:0" alt="' + team + '">';
+}
 
 const GROUPS = {
   A:["Mexique","Afrique du Sud","Rép. de Corée","Rép. Tchèque"],
@@ -526,7 +536,7 @@ function renderGroups() {
       const badge=i===0?`<span class="gc-badge badge-1">1er</span>`:i===1?`<span class="gc-badge badge-2">2e</span>`:'';
       html+=`<li class="gc-team">
         <div class="gc-rank" style="${i<2?`background:var(--${i===0?'gold':'blue'}-dim);color:var(--${i===0?'gold':'blue'})`:''}">${i+1}</div>
-        <span class="gc-flag">${FLAGS[t.name]||'🏳️'}</span>
+        <span class="gc-flag">${FLAGS(t.name)}</span>
         <span class="gc-name">${t.name}</span>
         <span style="font-size:11px;color:var(--txm);margin-left:auto;padding-right:6px">${t.mp>0?`${t.pts}pts ${t.gf}:${t.ga}`:''}</span>
         ${badge}
@@ -542,7 +552,7 @@ function renderGroups() {
       html+=`<div class="match-row">
         <span class="mr-num">M${m.no}</span>
         <div class="mr-team">
-          <span class="mr-flag">${FLAGS[t1]||'🏳️'}</span>
+          <span class="mr-flag">${FLAGS(t1)}</span>
           <span class="mr-name">${t1}</span>
         </div>
         <div class="mr-score">
@@ -552,7 +562,7 @@ function renderGroups() {
         </div>
         <div class="mr-team right">
           <span class="mr-name">${t2}</span>
-          <span class="mr-flag">${FLAGS[t2]||'🏳️'}</span>
+          <span class="mr-flag">${FLAGS(t2)}</span>
         </div>
         <span class="mr-date">${m.d}</span>
       </div>`;
@@ -607,7 +617,7 @@ function renderStandings() {
     s.forEach((t,i)=>{
       const cls=i===0?'q1':i===1?'q2':(i===2&&b8)?'q2':'q3';
       html+=`<tr class="${cls}">
-        <td><span style="margin-right:5px">${FLAGS[t.name]||'🏳️'}</span>${t.name}</td>
+        <td><span style="margin-right:5px">${FLAGS(t.name)}</span>${t.name}</td>
         <td>${t.mp}</td><td>${t.w}</td><td>${t.d}</td><td>${t.l}</td>
         <td>${t.gf}</td><td>${t.ga}</td><td>${t.gd>=0?'+':''}${t.gd}</td>
         <td class="pts">${t.pts}</td>
@@ -625,7 +635,7 @@ function renderStandings() {
     best8.forEach((t,i)=>{
       html+=`<div class="third-pill">
         <span class="third-pos">${i+1}.</span>
-        <span>${FLAGS[t.name]||'🏳️'}</span>
+        <span>${FLAGS(t.name)}</span>
         <span style="font-size:12px;font-weight:500">${t.name}</span>
         <span style="font-size:10px;color:var(--gold);font-weight:600">${t.pts}pts</span>
         <span class="third-pts">(Gr.${t.grp})</span>
@@ -675,12 +685,12 @@ function renderBracket() {
       html+=`<div class="br-slot" ${spacer}>
         <div class="br-card">
           <div class="br-team ${t1win?'win':''} ${t1lose?'lose':''} ${!t1?'empty':''}" onclick="${t1?`koClick(${id},'${t1.replace(/'/g,"\\'")}')`:'void(0)'}">
-            <span class="br-flag">${t1?FLAGS[t1]||'🏳️':'🏳️'}</span>
+            <span class="br-flag">${t1?FLAGS(t1):'🏳️'}</span>
             <span class="br-tname ${!t1?'ph':''}">${t1||'À déterm.'}</span>
             <span class="br-dot"></span>
           </div>
           <div class="br-team ${t2win?'win':''} ${t2lose?'lose':''} ${!t2?'empty':''}" onclick="${t2?`koClick(${id},'${t2.replace(/'/g,"\\'")}')`:'void(0)'}">
-            <span class="br-flag">${t2?FLAGS[t2]||'🏳️':'🏳️'}</span>
+            <span class="br-flag">${t2?FLAGS(t2):'🏳️'}</span>
             <span class="br-tname ${!t2?'ph':''}">${t2||'À déterm.'}</span>
             <span class="br-dot"></span>
           </div>
@@ -696,7 +706,7 @@ function renderBracket() {
   html+=`<div class="champ-col">
     <div class="champ-trophy">🏆</div>
     <div class="champ-label">Champion</div>
-    ${champ?`<div class="champ-name">${FLAGS[champ]||''} ${champ}</div>`:`<div class="champ-ph">En attente…</div>`}
+    ${champ?`<div class="champ-name">${FLAGS(champ)} ${champ}</div>`:`<div class="champ-ph">En attente…</div>`}
   </div>`;
 
   html+=`</div></div>`;
@@ -758,8 +768,8 @@ function renderResume() {
     const q1=s[0]?.mp>=3?s[0]?.name:null;
     const q2=s[1]?.mp>=3?s[1]?.name:null;
     html+=`<div class="qualif-item"><span class="qualif-grp">G.${g}</span><div class="qualif-teams">
-      <div>${q1?`${FLAGS[q1]||''} ${q1}`:'<span style="color:var(--txd)">—</span>'}</div>
-      <div style="color:var(--txm)">${q2?`${FLAGS[q2]||''} ${q2}`:'<span style="color:var(--txd)">—</span>'}</div>
+      <div>${q1?`${FLAGS(q1)} ${q1}`:'<span style="color:var(--txd)">—</span>'}</div>
+      <div style="color:var(--txm)">${q2?`${FLAGS(q2)} ${q2}`:'<span style="color:var(--txd)">—</span>'}</div>
     </div></div>`;
   });
   html+=`</div></div>`;
@@ -771,7 +781,7 @@ function pod(medal,lbl,team) {
   return `<div class="podium-item">
     <div class="podium-medal">${medal}</div>
     <div class="podium-rlabel">${lbl}</div>
-    ${team?`<div class="podium-flag">${FLAGS[team]||''}</div><div class="podium-team">${team}</div>`:`<div class="podium-flag">—</div><div class="podium-empty">À déterm.</div>`}
+    ${team?`<div class="podium-flag">${FLAGS(team)}</div><div class="podium-team">${team}</div>`:`<div class="podium-flag">—</div><div class="podium-empty">À déterm.</div>`}
   </div>`;
 }
 
