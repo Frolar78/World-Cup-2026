@@ -565,9 +565,25 @@ renderGroups();
 // ═══════════════════════════════════════════════════════════
 
 // ⚠️ Remplace par ton URL Vercel après déploiement
-const ODDS_PROXY = ''; // ← remplace par ton URL Vercel ex: https://world-cup-2026.vercel.app/api/odds
+const ODDS_PROXY = 'https://world-cup-2026-git-main-arthur-f-projects.vercel.app/api/odds';
 
-let oddsCache = null; // { matchKey: {home, draw, away, bk} }
+const TEAM_EN_TO_FR = {
+  "Algeria":"Algérie","Argentina":"Argentine","Australia":"Australie","Austria":"Autriche",
+  "Belgium":"Belgique","Bosnia & Herzegovina":"Bosnie-Herzég.","Brazil":"Brésil",
+  "Canada":"Canada","Cape Verde":"Cap-Vert","Colombia":"Colombie","Croatia":"Croatie",
+  "Curaçao":"Curaçao","Czech Republic":"Rép. Tchèque","DR Congo":"RD Congo",
+  "Ecuador":"Équateur","Egypt":"Egypte","England":"Angleterre","France":"France",
+  "Germany":"Allemagne","Ghana":"Ghana","Haiti":"Haïti","Iran":"RI Iran","Iraq":"Irak",
+  "Ivory Coast":"Côte d'Ivoire","Japan":"Japon","Jordan":"Jordanie","Mexico":"Mexique",
+  "Morocco":"Maroc","Netherlands":"Pays-Bas","New Zealand":"Nouv.-Zélande","Norway":"Norvège",
+  "Panama":"Panama","Paraguay":"Paraguay","Portugal":"Portugal","Qatar":"Qatar",
+  "Saudi Arabia":"Arabie Saoudite","Scotland":"Écosse","Senegal":"Sénégal",
+  "South Africa":"Afrique du Sud","South Korea":"Rép. de Corée","Spain":"Espagne",
+  "Sweden":"Suède","Switzerland":"Suisse","Tunisia":"Tunisie","Turkey":"Turquie",
+  "USA":"USA","Uruguay":"Uruguay","Uzbekistan":"Ouzbékistan"
+};
+
+let oddsCache = null;
 
 async function fetchOdds() {
   if (oddsCache) return oddsCache;
