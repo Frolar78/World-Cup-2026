@@ -213,12 +213,10 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 }
 
 /* ── Cotes bookmaker ── */
-.match-row{flex-wrap:wrap;align-items:stretch}
-.match-row{flex-wrap:nowrap;align-items:center}
-.match-odds-row{display:flex;width:100%;background:var(--s2);border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--r) var(--r);overflow:hidden}
-.match-row > .mr-date{align-self:center}
-.odd-col{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 0;background:var(--s2);border-top:1px solid var(--bd)}
-.odd-col-home{flex:1;border-left:3px solid transparent}
+.match-row{flex-wrap:wrap;align-items:center}
+.match-row::before{align-self:stretch}
+.odd-col{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5px 0;background:var(--s2);border-top:1px solid var(--bd)}
+.odd-col-home{flex:1}
 .odd-col-draw{flex:0 0 80px;border-left:1px solid var(--bd);border-right:1px solid var(--bd)}
 .odd-col-away{flex:1}
 .odd-val{font-size:12px;font-weight:700;background:var(--s3);border-radius:3px;padding:3px 8px;min-width:38px;text-align:center}
@@ -226,3 +224,4 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 .odd-draw{color:var(--txm)}
 .odd-away{color:var(--red)}
 .odd-src{font-size:9px;color:var(--txd);font-style:italic;margin-top:2px}
+.match-odds{display:flex;width:100%}
