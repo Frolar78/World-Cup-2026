@@ -211,3 +211,23 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
   .hdr-next{display:none}
   .tabs{padding:0 1rem}
 }
+
+/* ── Cotes bookmaker ── */
+.match-odds{
+  display:flex;align-items:center;gap:5px;padding:3px 8px 3px 4px;
+  border-top:1px solid var(--bd);flex-wrap:nowrap;
+  background:var(--s2);width:100%;
+}
+.odd-lbl{font-size:9px;font-weight:700;color:var(--txd);letter-spacing:.04em}
+.odd-val{
+  font-size:11px;font-weight:700;color:var(--txm);
+  background:var(--s3);border-radius:3px;padding:2px 5px;
+  min-width:30px;text-align:center;
+}
+.odd-val:first-of-type{color:var(--blue)}
+.odd-val:last-of-type{color:var(--red)}
+.odd-src{font-size:9px;color:var(--txd);margin-left:auto;white-space:nowrap}
+
+/* Adjust match-row to allow odds row below */
+.match-row{flex-wrap:wrap}
+.match-row > .match-odds{flex:0 0 100%;margin-top:0}
