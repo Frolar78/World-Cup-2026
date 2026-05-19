@@ -214,7 +214,8 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 
 /* ── Cotes bookmaker ── */
 .match-row{flex-wrap:wrap;align-items:stretch}
-.match-row > .mr-num{align-self:center}
+.match-row{flex-wrap:nowrap;align-items:center}
+.match-odds-row{display:flex;width:100%;background:var(--s2);border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--r) var(--r);overflow:hidden}
 .match-row > .mr-date{align-self:center}
 .odd-col{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 0;background:var(--s2);border-top:1px solid var(--bd)}
 .odd-col-home{flex:1;border-left:3px solid transparent}
