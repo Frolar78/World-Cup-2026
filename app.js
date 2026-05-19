@@ -565,7 +565,7 @@ renderGroups();
 // ═══════════════════════════════════════════════════════════
 
 // ⚠️ Remplace par ton URL Vercel après déploiement
-const ODDS_PROXY = 'https://world-cup-2026-1uv4gi0a1-arthur-f-projects.vercel.app/api/odds';
+const ODDS_PROXY = 'https://world-cup-2026-git-main-arthur-f-projects.vercel.app/api/odds';
 
 let oddsCache = null; // { matchKey: {home, draw, away, bk} }
 
