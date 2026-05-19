@@ -633,7 +633,5 @@ function oddsHtml(t1, t2) {
 // Charge les cotes au démarrage puis rafraîchit l'affichage
 // Charge les cotes sans bloquer l'affichage
 fetchOdds().then(() => {
-  try {
-    if (document.getElementById('sec-groupes').classList.contains('on')) renderGroups();
-  } catch(e) {}
+  renderGroups();
 }).catch(() => {});
