@@ -213,15 +213,15 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 }
 
 /* ── Cotes bookmaker ── */
-.match-odds{display:flex;width:100%;border-top:1px solid var(--bd);background:var(--s2);padding:4px 0;padding-left:55px;padding-right:70px}
-.odd-home-wrap{flex:1;display:flex;justify-content:center;align-items:center}
-.odd-draw-wrap{width:80px;display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0}
-.odd-away-wrap{flex:1;display:flex;justify-content:center;align-items:center;padding-right:60px}
-.odd-lbl{font-size:9px;font-weight:700;color:var(--txd);letter-spacing:.04em}
+.match-row{flex-wrap:wrap;align-items:stretch}
+.match-row > .mr-num{align-self:center}
+.match-row > .mr-date{align-self:center}
+.odd-col{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 0;background:var(--s2);border-top:1px solid var(--bd)}
+.odd-col-home{flex:1;border-left:3px solid transparent}
+.odd-col-draw{flex:0 0 80px;border-left:1px solid var(--bd);border-right:1px solid var(--bd)}
+.odd-col-away{flex:1}
 .odd-val{font-size:12px;font-weight:700;background:var(--s3);border-radius:3px;padding:3px 8px;min-width:38px;text-align:center}
 .odd-home{color:var(--blue)}
 .odd-draw{color:var(--txm)}
 .odd-away{color:var(--red)}
-.odd-src{font-size:9px;color:var(--txd);text-align:center;font-style:italic}
-.match-row{flex-wrap:wrap}
-.match-row > .match-odds{flex:0 0 100%}
+.odd-src{font-size:9px;color:var(--txd);font-style:italic;margin-top:2px}
