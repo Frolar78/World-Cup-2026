@@ -296,18 +296,20 @@ function renderGroups() {
     gmatches.forEach(m=>{
       const t1=teamOf(m.s1),t2=teamOf(m.s2),sc=getScore(m.no);
       const rowCls=hasScore(m.no)?'scored':hasPartial(m.no)?'partial':'';
-      html+=`<div class="match-row ${rowCls}" id="mr-${m.no}">
-        <span class="mr-num">M${m.no}</span>
-        <div class="mr-team">${FLAGS(t1)}<span class="mr-name">${t1}</span></div>
-        <div class="mr-score">
-          <input class="score-inp" type="number" min="0" max="20" value="${sc.g1??''}" placeholder="–" data-m="${m.no}" data-s="1" oninput="onScore(this)" onkeydown="tabScore(event,this)">
-          <span class="score-sep">:</span>
-          <input class="score-inp" type="number" min="0" max="20" value="${sc.g2??''}" placeholder="–" data-m="${m.no}" data-s="2" oninput="onScore(this)" onkeydown="tabScore(event,this)">
+      html+=`<div class="match-card ${rowCls}" id="mr-${m.no}">
+        <div class="match-row">
+          <span class="mr-num">M${m.no}</span>
+          <div class="mr-team">${FLAGS(t1)}<span class="mr-name">${t1}</span></div>
+          <div class="mr-score">
+            <input class="score-inp" type="number" min="0" max="20" value="${sc.g1??''}" placeholder="–" data-m="${m.no}" data-s="1" oninput="onScore(this)" onkeydown="tabScore(event,this)">
+            <span class="score-sep">:</span>
+            <input class="score-inp" type="number" min="0" max="20" value="${sc.g2??''}" placeholder="–" data-m="${m.no}" data-s="2" oninput="onScore(this)" onkeydown="tabScore(event,this)">
+          </div>
+          <div class="mr-team right"><span class="mr-name">${t2}</span>${FLAGS(t2)}</div>
+          <span class="mr-date">${m.d}</span>
         </div>
-        <div class="mr-team right"><span class="mr-name">${t2}</span>${FLAGS(t2)}</div>
-        <span class="mr-date">${m.d}</span>
-        </div>
-      ${oddsHtml(t1,t2)}`;
+        ${oddsHtml(t1,t2)}
+      </div>`;
     });
     html+=`</div></div>`;
   });
@@ -328,11 +330,11 @@ function onScore(inp) {
   ST.scores[no][side===1?'g1':'g2']=val;
   save();
   // Update just this row's class without re-rendering
-  const row=document.getElementById('mr-'+no);
-  if(row){
-    row.classList.remove('scored','partial');
-    if(hasScore(no)) row.classList.add('scored');
-    else if(hasPartial(no)) row.classList.add('partial');
+  const card=document.getElementById('mr-'+no);
+  if(card){
+    card.classList.remove('scored','partial');
+    if(hasScore(no)) card.classList.add('scored');
+    else if(hasPartial(no)) card.classList.add('partial');
   }
   // Update standings for this group inline
   refreshGroupStandings(GROUP_MATCHES.find(m=>m.no===no)?.g);
@@ -564,8 +566,7 @@ renderGroups();
 // COTES
 // ═══════════════════════════════════════════════════════════
 
-// ⚠️ Remplace par ton URL Vercel après déploiement
-const ODDS_PROXY = 'https://world-cup-2026-lilac.vercel.app/api/odds';
+const ODDS_PROXY = 'https://world-cup-2026-git-main-arthur-f-projects.vercel.app/api/odds';
 
 const TEAM_EN_TO_FR = {
   "Algeria":"Algérie","Argentina":"Argentine","Australia":"Australie","Austria":"Autriche",
@@ -583,10 +584,10 @@ const TEAM_EN_TO_FR = {
   "USA":"USA","Uruguay":"Uruguay","Uzbekistan":"Ouzbékistan"
 };
 
-var oddsCache = null;
+let oddsCache = null;
 
 async function fetchOdds() {
-  if (oddsCache && Object.keys(oddsCache).length > 0) return oddsCache;
+  if (oddsCache) return oddsCache;
   try {
     const res = await fetch(ODDS_PROXY);
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -602,7 +603,8 @@ async function fetchOdds() {
       const homeO = mkt.outcomes.find(o => o.name === match.home);
       const awayO = mkt.outcomes.find(o => o.name === match.away);
       const drawO = mkt.outcomes.find(o => o.name === 'Draw');
-      oddsCache[`${homeFr}|${awayFr}`] = { home: homeO?.price, draw: drawO?.price, away: awayO?.price, bk: bk.name };
+      const entry = { home: homeO?.price, draw: drawO?.price, away: awayO?.price, bk: bk.name };
+      oddsCache[`${homeFr}|${awayFr}`] = entry;
       oddsCache[`${awayFr}|${homeFr}`] = { home: awayO?.price, draw: drawO?.price, away: homeO?.price, bk: bk.name };
     });
     return oddsCache;
@@ -615,22 +617,26 @@ async function fetchOdds() {
 
 function getOddsForMatch(t1, t2) {
   if (!oddsCache) return null;
-  return oddsCache[`${t1}|${t2}`] || oddsCache[`${t2}|${t1}`] || null;
+  return oddsCache[`${t1}|${t2}`] || null;
 }
 
 function oddsHtml(t1, t2) {
   const o = getOddsForMatch(t1, t2);
   if (!o) return '';
   const fmt = v => v ? v.toFixed(2) : '—';
-  return `<div class="match-odds-row">
-    <div class="odd-col odd-col-home"><span class="odd-val odd-home">${fmt(o.home)}</span></div>
-    <div class="odd-col odd-col-draw"><span class="odd-val odd-draw">${fmt(o.draw)}</span><span class="odd-src">${o.bk}</span></div>
-    <div class="odd-col odd-col-away"><span class="odd-val odd-away">${fmt(o.away)}</span></div>
+  return `<div class="match-odds">
+    <div class="odd-spacer-left"></div>
+    <div class="odd-num"></div>
+    <div class="odd-home-wrap"><span class="odd-val odd-home">${fmt(o.home)}</span></div>
+    <div class="odd-score-wrap"><span class="odd-val odd-draw">${fmt(o.draw)}</span><span class="odd-src">${o.bk}</span></div>
+    <div class="odd-away-wrap"><span class="odd-val odd-away">${fmt(o.away)}</span></div>
+    <div class="odd-date-spacer"></div>
   </div>`;
 }
 
-// Charge les cotes au démarrage puis rafraîchit l'affichage
-// Charge les cotes sans bloquer l'affichage
+// Charge les cotes sans bloquer le rendu initial
 fetchOdds().then(() => {
-  renderGroups();
+  try {
+    if (document.getElementById('sec-groupes').classList.contains('on')) renderGroups();
+  } catch(e) {}
 }).catch(() => {});
