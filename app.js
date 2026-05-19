@@ -587,7 +587,6 @@ let oddsCache = null;
 
 async function fetchOdds() {
   if (oddsCache) return oddsCache;
-  if (!ODDS_PROXY) { oddsCache = {}; return oddsCache; }
   try {
     const res = await fetch(ODDS_PROXY);
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -598,20 +597,18 @@ async function fetchOdds() {
       if (!bk) return;
       const mkt = bk.markets.find(m => m.key === 'h2h');
       if (!mkt) return;
-      const home = mkt.outcomes.find(o => o.name === match.home);
-      const away = mkt.outcomes.find(o => o.name === match.away);
-      const draw = mkt.outcomes.find(o => o.name === 'Draw');
-      // clé = "TeamA vs TeamB" (les deux ordres)
-      const key = `${match.home}|${match.away}`;
-      oddsCache[key] = {
-        home: home?.price, draw: draw?.price, away: away?.price,
-        bk: bk.name, commence: match.commence
-      };
+      const homeFr = TEAM_EN_TO_FR[match.home] || match.home;
+      const awayFr = TEAM_EN_TO_FR[match.away] || match.away;
+      const homeO = mkt.outcomes.find(o => o.name === match.home);
+      const awayO = mkt.outcomes.find(o => o.name === match.away);
+      const drawO = mkt.outcomes.find(o => o.name === 'Draw');
+      oddsCache[`${homeFr}|${awayFr}`] = { home: homeO?.price, draw: drawO?.price, away: awayO?.price, bk: bk.name };
+      oddsCache[`${awayFr}|${homeFr}`] = { home: awayO?.price, draw: drawO?.price, away: homeO?.price, bk: bk.name };
     });
     return oddsCache;
   } catch(e) {
     console.warn('Cotes indisponibles:', e.message);
-    oddsCache = {}; // évite de re-tenter et de bloquer
+    oddsCache = {};
     return {};
   }
 }
