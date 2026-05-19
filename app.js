@@ -565,12 +565,13 @@ renderGroups();
 // ═══════════════════════════════════════════════════════════
 
 // ⚠️ Remplace par ton URL Vercel après déploiement
-const ODDS_PROXY = 'https://world-cup-2026-git-main-arthur-f-projects.vercel.app/api/odds';
+const ODDS_PROXY = ''; // ← remplace par ton URL Vercel ex: https://world-cup-2026.vercel.app/api/odds
 
 let oddsCache = null; // { matchKey: {home, draw, away, bk} }
 
 async function fetchOdds() {
   if (oddsCache) return oddsCache;
+  if (!ODDS_PROXY) { oddsCache = {}; return oddsCache; }
   try {
     const res = await fetch(ODDS_PROXY);
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -594,6 +595,7 @@ async function fetchOdds() {
     return oddsCache;
   } catch(e) {
     console.warn('Cotes indisponibles:', e.message);
+    oddsCache = {}; // évite de re-tenter et de bloquer
     return {};
   }
 }
@@ -616,6 +618,9 @@ function oddsHtml(t1, t2) {
 }
 
 // Charge les cotes au démarrage puis rafraîchit l'affichage
+// Charge les cotes sans bloquer l'affichage
 fetchOdds().then(() => {
-  if (document.getElementById('sec-groupes').classList.contains('on')) renderGroups();
-});
+  try {
+    if (document.getElementById('sec-groupes').classList.contains('on')) renderGroups();
+  } catch(e) {}
+}).catch(() => {});
