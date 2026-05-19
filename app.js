@@ -587,7 +587,7 @@ const TEAM_EN_TO_FR = {
 var oddsCache = {};
 
 async function fetchOdds() {
-  if (oddsCache) return oddsCache;
+  if (oddsCache && Object.keys(oddsCache).length > 0) return oddsCache;
   try {
     const res = await fetch(ODDS_PROXY);
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -616,7 +616,7 @@ async function fetchOdds() {
 }
 
 function getOddsForMatch(t1, t2) {
-  if (!oddsCache) return null;
+  if (!oddsCache || typeof oddsCache !== "object") return null;
   return oddsCache[`${t1}|${t2}`] || null;
 }
 
