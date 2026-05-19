@@ -583,10 +583,10 @@ const TEAM_EN_TO_FR = {
   "USA":"USA","Uruguay":"Uruguay","Uzbekistan":"Ouzbékistan"
 };
 
-var oddsCache = {};
+var oddsCache = null;
 
 async function fetchOdds() {
-  if (oddsCache) return oddsCache;
+  if (oddsCache && Object.keys(oddsCache).length > 0) return oddsCache;
   try {
     const res = await fetch(ODDS_PROXY);
     if (!res.ok) throw new Error('HTTP ' + res.status);
