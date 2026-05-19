@@ -306,7 +306,7 @@ function renderGroups() {
         </div>
         <div class="mr-team right"><span class="mr-name">${t2}</span>${FLAGS(t2)}</div>
         <span class="mr-date">${m.d}</span>
-        ${oddsHtml(t1,t2)}
+        ${typeof oddsCache !== 'undefined' ? oddsHtml(t1,t2) : ''}
       </div>`;
     });
     html+=`</div></div>`;
