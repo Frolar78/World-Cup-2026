@@ -215,7 +215,7 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 /* ── Cotes bookmaker ── */
 .match-odds{display:flex;width:100%;border-top:1px solid var(--bd);background:var(--s2);padding:4px 0}
 .odd-home-wrap{flex:1;display:flex;justify-content:center;align-items:center}
-.odd-draw-wrap{width:72px;display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0}
+.odd-draw-wrap{width:88px;display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0}
 .odd-away-wrap{flex:1;display:flex;justify-content:center;align-items:center}
 .odd-lbl{font-size:9px;font-weight:700;color:var(--txd);letter-spacing:.04em}
 .odd-val{font-size:12px;font-weight:700;background:var(--s3);border-radius:3px;padding:3px 8px;min-width:38px;text-align:center}
