@@ -565,7 +565,7 @@ renderGroups();
 // ═══════════════════════════════════════════════════════════
 
 // ⚠️ Remplace par ton URL Vercel après déploiement
-const ODDS_PROXY = 'https://world-cup-2026-git-main-arthur-f-projects.vercel.app/api/odds';
+const ODDS_PROXY = 'https://world-cup-2026-lilac.vercel.app/api/odds';
 
 const TEAM_EN_TO_FR = {
   "Algeria":"Algérie","Argentina":"Argentine","Australia":"Australie","Austria":"Autriche",
