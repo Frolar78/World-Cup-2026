@@ -306,6 +306,7 @@ function renderGroups() {
         </div>
         <div class="mr-team right"><span class="mr-name">${t2}</span>${FLAGS(t2)}</div>
         <span class="mr-date">${m.d}</span>
+        ${oddsHtml(t1,t2)}
       </div>`;
     });
     html+=`</div></div>`;
@@ -558,3 +559,63 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
 // ═══════════════════════════════════════════════════════════
 load();
 renderGroups();
+
+// ═══════════════════════════════════════════════════════════
+// COTES
+// ═══════════════════════════════════════════════════════════
+
+// ⚠️ Remplace par ton URL Vercel après déploiement
+const ODDS_PROXY = 'https://ton-projet.vercel.app/api/odds';
+
+let oddsCache = null; // { matchKey: {home, draw, away, bk} }
+
+async function fetchOdds() {
+  if (oddsCache) return oddsCache;
+  try {
+    const res = await fetch(ODDS_PROXY);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    oddsCache = {};
+    data.forEach(match => {
+      const bk = match.bookmakers[0];
+      if (!bk) return;
+      const mkt = bk.markets.find(m => m.key === 'h2h');
+      if (!mkt) return;
+      const home = mkt.outcomes.find(o => o.name === match.home);
+      const away = mkt.outcomes.find(o => o.name === match.away);
+      const draw = mkt.outcomes.find(o => o.name === 'Draw');
+      // clé = "TeamA vs TeamB" (les deux ordres)
+      const key = `${match.home}|${match.away}`;
+      oddsCache[key] = {
+        home: home?.price, draw: draw?.price, away: away?.price,
+        bk: bk.name, commence: match.commence
+      };
+    });
+    return oddsCache;
+  } catch(e) {
+    console.warn('Cotes indisponibles:', e.message);
+    return {};
+  }
+}
+
+function getOddsForMatch(t1, t2) {
+  if (!oddsCache) return null;
+  return oddsCache[`${t1}|${t2}`] || oddsCache[`${t2}|${t1}`] || null;
+}
+
+function oddsHtml(t1, t2) {
+  const o = getOddsForMatch(t1, t2);
+  if (!o) return '';
+  const fmt = v => v ? v.toFixed(2) : '—';
+  return `<div class="match-odds">
+    <span class="odd-val" title="${t1}">${fmt(o.home)}</span>
+    <span class="odd-lbl">N</span><span class="odd-val">${fmt(o.draw)}</span>
+    <span class="odd-val" title="${t2}">${fmt(o.away)}</span>
+    <span class="odd-src">${o.bk}</span>
+  </div>`;
+}
+
+// Charge les cotes au démarrage puis rafraîchit l'affichage
+fetchOdds().then(() => {
+  if (document.getElementById('sec-groupes').classList.contains('on')) renderGroups();
+});
