@@ -622,11 +622,11 @@ function oddsHtml(t1, t2) {
   const o = getOddsForMatch(t1, t2);
   if (!o) return '';
   const fmt = v => v ? v.toFixed(2) : '—';
-  return `
+  return `<div class="match-odds-row">
     <div class="odd-col odd-col-home"><span class="odd-val odd-home">${fmt(o.home)}</span></div>
     <div class="odd-col odd-col-draw"><span class="odd-val odd-draw">${fmt(o.draw)}</span><span class="odd-src">${o.bk}</span></div>
     <div class="odd-col odd-col-away"><span class="odd-val odd-away">${fmt(o.away)}</span></div>
-  `;
+  </div>`;
 }
 
 // Charge les cotes au démarrage puis rafraîchit l'affichage
