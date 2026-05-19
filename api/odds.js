@@ -4,7 +4,9 @@
 export default async function handler(req, res) {
   // CORS : autorise GitHub Pages et localhost
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  if (req.method === 'OPTIONS') { res.status(200).end(); return; }
 
   const API_KEY = process.env.ODDS_API_KEY; // clé stockée dans Vercel (jamais exposée)
   const SPORT   = 'soccer_fifa_world_cup';
