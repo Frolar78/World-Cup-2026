@@ -583,7 +583,7 @@ const TEAM_EN_TO_FR = {
   "USA":"USA","Uruguay":"Uruguay","Uzbekistan":"Ouzbékistan"
 };
 
-let oddsCache = null;
+var oddsCache = null;
 
 async function fetchOdds() {
   if (oddsCache) return oddsCache;
